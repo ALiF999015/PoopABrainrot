@@ -1,0 +1,153 @@
+-- 🌌 Layar Intro dengan Bintang
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local Stars = {}
+
+ScreenGui.Parent = game.CoreGui
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(173, 216, 230)
+Frame.Size = UDim2.new(1, 0, 1, 0)
+
+TextLabel.Parent = Frame
+TextLabel.Text = "✨ Created by Rey_Script ✨"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.Font = Enum.Font.SourceSansBold
+TextLabel.TextSize = 40
+TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+TextLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+-- Efek Bintang
+for i = 1, 50 do
+	local star = Instance.new("TextLabel")
+	star.Parent = Frame
+	star.Text = "*"
+	star.TextColor3 = Color3.fromRGB(255, 255, 255)
+	star.Font = Enum.Font.SourceSans
+	star.TextSize = math.random(10, 20)
+	star.BackgroundTransparency = 1
+	star.Position = UDim2.new(math.random(), 0, math.random(), 0)
+	table.insert(Stars, star)
+end
+
+-- Animasi kelap-kelip
+spawn(function()
+	while Frame.Parent do
+		for _, star in ipairs(Stars) do
+			star.TextTransparency = math.random()
+		end
+		wait(0.2)
+	end
+end)
+
+-- Hilang setelah 2 detik
+delay(2, function()
+	Frame:Destroy()
+end)
+
+-- 🌟 GUI Utama
+local mainGui = Instance.new("ScreenGui")
+mainGui.Parent = game.CoreGui
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Parent = mainGui
+mainFrame.BackgroundColor3 = Color3.fromRGB(173, 216, 230)
+mainFrame.Size = UDim2.new(0, 320, 0, 200)
+mainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
+
+-- Draggable Support
+mainFrame.Active = true
+mainFrame.Draggable = true
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Parent = mainFrame
+title.Text = "Rey_Script Hub Poop A Brainrot"
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 22
+title.BackgroundTransparency = 1
+title.Size = UDim2.new(1, -40, 0, 40)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.TextColor3 = Color3.fromRGB(0, 0, 0)
+
+-- ❌ Tombol Close
+local closeBtn = Instance.new("TextButton")
+closeBtn.Parent = mainFrame
+closeBtn.Text = "❌"
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.Font = Enum.Font.SourceSansBold
+closeBtn.TextSize = 18
+
+closeBtn.MouseButton1Click:Connect(function()
+	mainGui:Destroy()
+end)
+
+-- Variabel Loop
+local looping = false
+
+-- Fungsi Fire Event
+local function fireEvents()
+	game:GetService("ReplicatedStorage"):WaitForChild("PoopSuccessEvent"):FireServer()
+	game:GetService("ReplicatedStorage"):WaitForChild("StartPoopMinigameServer"):FireServer()
+end
+
+-- Tombol Start Once
+local startOnceBtn = Instance.new("TextButton")
+startOnceBtn.Parent = mainFrame
+startOnceBtn.Text = "▶ Start Once"
+startOnceBtn.Size = UDim2.new(1, -20, 0, 40)
+startOnceBtn.Position = UDim2.new(0, 10, 0, 50)
+startOnceBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 255)
+startOnceBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+startOnceBtn.Font = Enum.Font.SourceSansBold
+startOnceBtn.TextSize = 20
+
+startOnceBtn.MouseButton1Click:Connect(function()
+	fireEvents()
+end)
+
+-- Tombol Start Loop
+local startLoopBtn = Instance.new("TextButton")
+startLoopBtn.Parent = mainFrame
+startLoopBtn.Text = "▶ Start Loop"
+startLoopBtn.Size = UDim2.new(1, -20, 0, 40)
+startLoopBtn.Position = UDim2.new(0, 10, 0, 100)
+startLoopBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 255)
+startLoopBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+startLoopBtn.Font = Enum.Font.SourceSansBold
+startLoopBtn.TextSize = 20
+
+startLoopBtn.MouseButton1Click:Connect(function()
+	looping = true
+	while looping do
+		fireEvents()
+		wait() -- delay 0 detik
+	end
+end)
+
+-- Tombol Stop Loop
+local stopLoopBtn = Instance.new("TextButton")
+stopLoopBtn.Parent = mainFrame
+stopLoopBtn.Text = "⏹ Stop Loop"
+stopLoopBtn.Size = UDim2.new(1, -20, 0, 40)
+stopLoopBtn.Position = UDim2.new(0, 10, 0, 150)
+stopLoopBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+stopLoopBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+stopLoopBtn.Font = Enum.Font.SourceSansBold
+stopLoopBtn.TextSize = 20
+
+stopLoopBtn.MouseButton1Click:Connect(function()
+	looping = false
+end)
+
+-- ⌨️ Shortcut X untuk Close GUI
+game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
+	if not gp and input.KeyCode == Enum.KeyCode.X then
+		if mainGui then
+			mainGui:Destroy()
+		end
+	end
+end)
